@@ -7,6 +7,7 @@ const reportController = asyncHandler(async (req, res) => {
     let { name, email, phone, gender, age, symptoms, status, diagnosedWith, dateOfDiagnosis, address } = req.body;
     const ipAddress = req.socket.remoteAddress;
     address= JSON.parse(address.replace(/'/g, '"'));
+    symptoms = symptoms.split(',');
 
     // console.log(ipAddress);
     if([gender, age, symptoms, status, address].includes(undefined)){
@@ -22,7 +23,7 @@ const reportController = asyncHandler(async (req, res) => {
         if(!uploadedUrl)  return res.status(500).json(new ApiError(500, 'Failed to upload report'));
         reportUrl = uploadedUrl;
     }
-    
+
     const report =  await Report.create({
         name,
         email,
