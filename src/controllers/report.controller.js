@@ -3,11 +3,14 @@ import { Report } from '../models/report.modal.js';
 import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import {uploadOnCloudinary} from '../utils/uploadOnCloudinary.js';
+import { isValidObjectId } from 'mongoose';
 const reportController = asyncHandler(async (req, res) => {
     let { name, email, phone, gender, age, symptoms, status, diagnosedWith, dateOfDiagnosis, address } = req.body;
     const ipAddress = req.socket.remoteAddress;
-    address= JSON.parse(address.replace(/'/g, '"'));
-    symptoms = symptoms.split(',');
+    if(!address )  return res.status(400).json(new ApiError(400, 'Address is required'));
+    address = JSON.parse(address);
+    if(symptoms && typeof symptoms === 'string') symptoms = symptoms.split(',');
+
 
     // console.log(ipAddress);
     if([gender, age, symptoms, status, address].includes(undefined)){

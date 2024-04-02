@@ -48,7 +48,7 @@ const reportSchema = new mongoose.Schema({
         required: false,
     },
     dateOfDiagnosis:{
-        type: Date,
+        type: String,
         required: false,
     },
     address: {
