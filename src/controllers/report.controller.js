@@ -8,6 +8,7 @@ const reportController = asyncHandler(async (req, res) => {
     let { name, email, phone, gender, age, symptoms, status, diagnosedWith, dateOfDiagnosis, address } = req.body;
     const ipAddress = req.socket.remoteAddress;
     if(!address )  return res.status(400).json(new ApiError(400, 'Address is required'));
+    console.log('address',address);
     address = JSON.parse(address);
     if(symptoms && typeof symptoms === 'string') symptoms = symptoms.split(',');
 
