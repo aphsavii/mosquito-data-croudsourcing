@@ -9,7 +9,8 @@ const reportController = asyncHandler(async (req, res) => {
     const ipAddress = req.socket.remoteAddress;
     if(!address )  return res.status(400).json(new ApiError(400, 'Address is required'));
     console.log('address',address);
-    address = JSON.parse(address);
+    
+    if (typeof address =='string') address = JSON.parse(address);
     if(symptoms && typeof symptoms === 'string') symptoms = symptoms.split(',');
 
 
@@ -20,6 +21,7 @@ const reportController = asyncHandler(async (req, res) => {
     if(status === 'diagnosed' && [diagnosedWith, dateOfDiagnosis].includes(undefined)){
         return res.status(400).json(new ApiError(400, 'Diagnosed With and Date of Diagnosis are required fields'));
     }
+
     let reportUrl = '';
     if(req.files && req.files.report){
         const localReportFilePath = req.files.report[0]?.path;
@@ -46,7 +48,6 @@ const reportController = asyncHandler(async (req, res) => {
     res.status(200).json({
     status: 'success',
     message: 'Report submitted successfully',
-
     data: req.body,
 });
 
